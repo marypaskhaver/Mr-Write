@@ -33,7 +33,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         dropDownChoiceAndFunction[listItem]!()
     }
     
-    
     var list = ["Royal", "Magician", "Warrior"]
     var dropDownChoiceAndFunction: Dictionary = [String : () -> ()]()
     var usersName: String!
@@ -73,19 +72,68 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
     }
     
+    public func replaceLetters() {
+        let transitionTable: [String : [String]] = [
+            "a": ["a", "ae", "ai"],
+            "b": ["b", "v"],
+            "c": ["c", "k"],
+            "e": ["ae", "e", "i"],
+            "f": ["f", "ph"],
+            "g": ["g", "j"],
+            "j": ["j", "dg"],
+            "q": ["q", "kyu"],
+            "s": ["s", "es", "ss"],
+            "t": ["t", "ti"],
+            "u": ["u", "yu"],
+            "v": ["v", "vi", "vee"],
+            "y": ["y", "i", "ie"],
+            "z": ["z", "zee", "zi", "zed"]
+        ]
+    
+        for letterChar in usersName {
+            let letter = String(letterChar).lowercased()
+            var randomReplacementLetter: String = letter
+                
+            if transitionTable[letter] != nil {
+                let randomInt = Int.random(in: 0..<(transitionTable[letter]?.count ?? 0))
+                randomReplacementLetter = transitionTable[letter]![randomInt]
+            }
+            
+            usersName = usersName.stringByReplacingFirstOccurrenceOfString(target: letter, withString: randomReplacementLetter)
+        }
+    }
+    
     public func generateMagicianName() {
-        pseudonymLabel.text = usersName + " the Foo"
+        replaceLetters()
+        usersName += magicSuffix().lowercased()
+        pseudonymLabel.text = usersName
+    }
+    
+    public func magicSuffix() -> String {
+        var randomWord = ""
+        
+        if let path = Bundle.main.path(forResource: "magicSuffixes", ofType: "txt") {
+            do {
+                let data = try String(contentsOfFile: path, encoding: .utf8)
+                let lines = data.components(separatedBy: .newlines)
 
+                randomWord = lines[numericCast(arc4random_uniform(numericCast(lines.count)))]
+
+            } catch {
+                print(error)
+            }
+        }
+
+        // Capitalizes first letter of each word
+        return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
     }
     
     public func generateWarriorName() {
          pseudonymLabel.text = usersName + " the Bar"
     }
     
-    
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{
-        return 1
-        
+        return 1  
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
@@ -96,6 +144,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         self.view.endEditing(true)
         listItem = list[row]
         return list[row]
+    }
+}
+
+extension String
+{
+    func stringByReplacingFirstOccurrenceOfString(
+            target: String, withString replaceString: String) -> String
+    {
+        if let range = self.range(of: target) {
+            return self.replacingCharacters(in: range, with: replaceString)
+        }
+        return self
     }
 }
 
