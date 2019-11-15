@@ -33,6 +33,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         dropDownChoiceAndFunction[listItem]!()
     }
     
+    
     var list = ["Royal", "Magician", "Warrior"]
     var dropDownChoiceAndFunction: Dictionary = [String : () -> ()]()
     var usersName: String!
@@ -73,6 +74,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     public func replaceLetters() {
+        
         let transitionTable: [String : [String]] = [
             "a": ["a", "ae", "ai"],
             "b": ["b", "v"],
@@ -91,15 +93,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         ]
     
         for letterChar in usersName {
+            let isLetterCapitalized: Bool = letterChar.isUppercase
             let letter = String(letterChar).lowercased()
             var randomReplacementLetter: String = letter
                 
             if transitionTable[letter] != nil {
-                let randomInt = Int.random(in: 0..<(transitionTable[letter]?.count ?? 0))
+                let randomInt = Int.random(in: 0..<(transitionTable[letter]?.count ?? 1))
                 randomReplacementLetter = transitionTable[letter]![randomInt]
             }
             
-            usersName = usersName.stringByReplacingFirstOccurrenceOfString(target: letter, withString: randomReplacementLetter)
+            if isLetterCapitalized {
+                randomReplacementLetter = randomReplacementLetter.uppercased()
+            }
+            
+            usersName = usersName.stringByReplacingFirstOccurrenceOfString(target: String(letterChar), withString: randomReplacementLetter)
         }
     }
     
@@ -132,8 +139,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
          pseudonymLabel.text = usersName + " the Bar"
     }
     
+    
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{
-        return 1  
+        return 1
+        
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
