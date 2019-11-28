@@ -15,8 +15,10 @@ class TextFileReader {
         if let path = Bundle.main.path(forResource: fileName, ofType: "txt") {
             do {
                 let data = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-
+                
+                // dropLast() needed to exclude blank line at end of txt file
+                let lines = data.components(separatedBy: .newlines).dropLast()
+                
                 randomWord = lines[numericCast(arc4random_uniform(numericCast(lines.count)))]
 
             } catch {
@@ -25,6 +27,6 @@ class TextFileReader {
         }
 
         // Capitalizes first letter of each word
-        return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
+        return randomWord.capitalized
     }
 }
