@@ -51,30 +51,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     public func generateRoyalName() {
-        pseudonymLabel.text = usersName + " the " + randomAdjective()
-    }
-    
-    public func randomAdjective() -> String {
-        var randomWord = ""
-        
-        if let path = Bundle.main.path(forResource: "adjectives", ofType: "txt") {
-            do {
-                let data = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-
-                randomWord = lines[numericCast(arc4random_uniform(numericCast(lines.count)))]
-
-            } catch {
-                print(error)
-            }
-        }
-
-        // Capitalizes first letter of each word
-        return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
+        let rg = RoyalNameGenerator()
+        pseudonymLabel.text = rg.generate(forName: usersName)
     }
     
     public func generateMagicianName() {
-        let mg = MagicianNameGenerator()        
+        let mg = MagicianNameGenerator()
         usersName = mg.generate(forName: usersName)
         pseudonymLabel.text = usersName
     }
