@@ -9,27 +9,22 @@
 import Foundation
 
 class RoyalNameGenerator: NameGenerator {
+    var textFileReader: TextFileReader = TextFileReader()
+    
     public func generate(forName name: String) -> String {
-        return name + " the " + randomAdjective()
+        return name + " the " + adjective() + "\n" + title() + " of the " + noun()
     }
     
-    private func randomAdjective() -> String {
-        var randomWord = ""
-        
-        if let path = Bundle.main.path(forResource: "adjectives", ofType: "txt") {
-            do {
-                let data = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-
-                randomWord = lines[numericCast(arc4random_uniform(numericCast(lines.count)))]
-
-            } catch {
-                print(error)
-            }
-        }
-
-        // Capitalizes first letter of each word
-        return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
+    private func title() -> String {
+        return textFileReader.returnRandomWordFromFile(withName: "titles")
+    }
+    
+    private func adjective() -> String {
+        return textFileReader.returnRandomWordFromFile(withName: "adjectives")
+    }
+    
+    private func noun() -> String {
+       return textFileReader.returnRandomWordFromFile(withName: "nouns")
     }
     
 }
