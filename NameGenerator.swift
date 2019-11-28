@@ -9,5 +9,6 @@
 import Foundation
 
 protocol NameGenerator {
+    var textFileReader: TextFileReader { get }
     func generate(forName name: String) -> String
 }
