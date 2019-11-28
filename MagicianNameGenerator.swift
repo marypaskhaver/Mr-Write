@@ -9,6 +9,8 @@
 import Foundation
 
 class MagicianNameGenerator: NameGenerator {
+    var textFileReader: TextFileReader = TextFileReader()
+    
     private let transitionTable: [String : [String]] = [
         "a": ["a", "ae", "ai"],
         "b": ["b", "v"],
@@ -75,24 +77,8 @@ class MagicianNameGenerator: NameGenerator {
     }
     
     private func magicSuffix() -> String {
-        var randomWord = ""
-        
-        if let path = Bundle.main.path(forResource: "magicSuffixes", ofType: "txt") {
-            do {
-                let data = try String(contentsOfFile: path, encoding: .utf8)
-                let lines = data.components(separatedBy: .newlines)
-
-                randomWord = lines[numericCast(arc4random_uniform(numericCast(lines.count)))]
-
-            } catch {
-                print(error)
-            }
-        }
-
-        // Capitalizes first letter of each word
-        return randomWord.prefix(1).uppercased() + randomWord.lowercased().dropFirst()
+        return textFileReader.returnRandomWordFromFile(withName: "magicSuffixes")
     }
-    
 }
 
 extension String {
