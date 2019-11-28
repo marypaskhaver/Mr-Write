@@ -28,7 +28,7 @@ class MagicianNameGenerator: NameGenerator {
         "z": ["z", "zee", "zi", "zed"]
     ]
     
-    public func generate(forName name: String) -> String {
+    public func generate(forName name: String, withGender gender: Int) -> String {
         // Allow name to be changed
         var name = name
         
@@ -69,7 +69,8 @@ class MagicianNameGenerator: NameGenerator {
         let magicEnding: String = magicSuffix().lowercased()
         
         // Remove repeating vowels at the end of the user's name
-        if (["a", "e", "i", "o", "u"].contains(name.last) && magicEnding.first == name.last!) {
+        if (["a", "e", "i", "o", "u"].contains(name.last?.lowercased()) &&
+            magicEnding.first?.lowercased() == name.last!.lowercased()) {
             name = String(name.dropLast())
         }
         
@@ -90,5 +91,3 @@ extension String {
         return self
     }
 }
-
-
