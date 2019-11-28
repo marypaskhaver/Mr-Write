@@ -14,10 +14,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var dropDown: UIPickerView!
     @IBOutlet weak var generateButton: UIButton!
     @IBOutlet weak var pseudonymLabel: UILabel!
+    @IBOutlet weak var genderSegmentedControl: UISegmentedControl!
     
     @IBAction func generateButtonPressed(_ sender: Any) {
         usersName = textBox.text ?? ""
-        
+                
         if (usersName == "") {
             pseudonymLabel.text = "Please type in your name!"
             return
@@ -27,16 +28,21 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
         dropDownChoiceAndFunction =
                     ["Royal": generateRoyalName,
-                     "Magician": generateMagicianName,
-                     "Warrior": generateWarriorName]
+                     "Magician": generateMagicianName
+                     ]
         
         dropDownChoiceAndFunction[listItem]!()
     }
     
+    @IBAction func segmentedControlPressed(_ sender: Any) {
+        // 0 is male, 1 is female
+        usersGender = genderSegmentedControl.selectedSegmentIndex 
+    }
     
-    var list = ["Royal", "Magician", "Warrior"]
+    var list = ["Royal", "Magician"]
     var dropDownChoiceAndFunction: Dictionary = [String : () -> ()]()
     var usersName: String!
+    var usersGender: Int!
     var listItem: String!
     
     override func viewDidLoad() {
@@ -52,17 +58,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     public func generateRoyalName() {
         let rg = RoyalNameGenerator()
-        pseudonymLabel.text = rg.generate(forName: usersName)
+        pseudonymLabel.text = rg.generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
     }
     
     public func generateMagicianName() {
         let mg = MagicianNameGenerator()
-        usersName = mg.generate(forName: usersName)
+        usersName = mg.generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
         pseudonymLabel.text = usersName
-    }
-    
-    public func generateWarriorName() {
-         pseudonymLabel.text = usersName + " the Bar"
     }
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{
