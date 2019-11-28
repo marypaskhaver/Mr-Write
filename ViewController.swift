@@ -80,17 +80,3 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
 }
-
-extension String
-{
-    func stringByReplacingFirstOccurrenceOfString(
-            target: String, withString replaceString: String) -> String
-    {
-        if let range = self.range(of: target) {
-            return self.replacingCharacters(in: range, with: replaceString)
-        }
-        
-        return self
-    }
-}
-
