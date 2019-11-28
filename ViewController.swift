@@ -16,39 +16,37 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var pseudonymLabel: UILabel!
     @IBOutlet weak var genderSegmentedControl: UISegmentedControl!
     
+    var usersName: String!
+    var usersGender: Int!
+    var pickerListItem: String!
+    var pickerChoiceAndFunction: [String : () -> ()]! = [ : ]
+    var pickerList: [String] = []
+    
     @IBAction func generateButtonPressed(_ sender: Any) {
         usersName = textBox.text ?? ""
-                
+        
         if (usersName == "") {
             pseudonymLabel.text = "Please type in your name!"
             return
         }
-        
-        var dropDownChoiceAndFunction: Dictionary = [String : () -> ()]()
-
-        dropDownChoiceAndFunction =
-                    ["Royal": generateRoyalName,
-                     "Magician": generateMagicianName
-                     ]
-        
-        dropDownChoiceAndFunction[listItem]!()
+       
+        pickerChoiceAndFunction[pickerListItem]!()
     }
     
     @IBAction func segmentedControlPressed(_ sender: Any) {
         // 0 is male, 1 is female
-        usersGender = genderSegmentedControl.selectedSegmentIndex 
+        usersGender = genderSegmentedControl.selectedSegmentIndex
     }
-    
-    var list = ["Royal", "Magician"]
-    var dropDownChoiceAndFunction: Dictionary = [String : () -> ()]()
-    var usersName: String!
-    var usersGender: Int!
-    var listItem: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        pickerChoiceAndFunction = [
+            "Royal": generateRoyalName,
+            "Magician": generateMagicianName
+        ]
         
+        pickerList = Array(pickerChoiceAndFunction.keys)
     }
     
     override func didReceiveMemoryWarning() {
@@ -72,13 +70,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        return list.count
+        return pickerList.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         self.view.endEditing(true)
-        listItem = list[row]
-        return list[row]
+        pickerListItem = pickerList[row]
+        return pickerList[row]
     }
     
 }
