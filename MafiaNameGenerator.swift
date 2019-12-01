@@ -12,11 +12,32 @@ class MafiaNameGenerator: NameGenerator {
     var textFileReader: TextFileReader = TextFileReader()
     
     public func generate(forName name: String, withGender gender: Int) -> String {
-        return String(name.dropLast()) + mafiaSuffix(forGender: gender) + " \"" + adjective().capitalized + " " + mafiaNouns().capitalized + "\"" 
+        var theAdded: Bool = false
+        
+        var name = String(name.dropLast()).capitalized + mafiaSuffix(forGender: gender)
+        
+        if (Int.random(in: 0..<100) < 50) {
+            name += " \"" + adjective().capitalized + " "
+        } else {
+            name += " the " + adjective().capitalized + " "
+            theAdded = true
+        }
+                
+        name += mafiaNouns().capitalized
+        
+        if !theAdded {
+            name += "\""
+        }
+        
+        return name
     }
     
     private func adjective() -> String {
         return textFileReader.returnRandomWordFromFile(withName: "adjectives")
+    }
+    
+    private func color() -> String {
+        textFileReader.returnRandomWordFromFile(withName: "colors")
     }
     
     private func mafiaSuffix(forGender gender: Int) -> String {
