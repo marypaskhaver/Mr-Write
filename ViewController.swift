@@ -19,7 +19,7 @@ class ViewController: UIViewController, UITextFieldDelegate, MyPickerViewProtoco
     var usersName: String!
     var usersGender: Int!
     var pickerListItem: String!
-    var pickerChoiceAndFunction: [String : () -> ()]! = [ : ]
+    var pickerChoiceAndFunction: [String : () -> (String)]! = [ : ]
     var myPickerView: MyPickerView! // Custom class
     
     @IBAction func generateButtonPressed(_ sender: Any) {
@@ -30,7 +30,7 @@ class ViewController: UIViewController, UITextFieldDelegate, MyPickerViewProtoco
             return
         }
         
-        pickerChoiceAndFunction[pickerListItem]!()
+        pseudonymLabel.text = pickerChoiceAndFunction[pickerListItem]!()
     }
     
     @IBAction func segmentedControlPressed(_ sender: Any) {
@@ -43,7 +43,8 @@ class ViewController: UIViewController, UITextFieldDelegate, MyPickerViewProtoco
         // Do any additional setup after loading the view, typically from a nib.
         pickerChoiceAndFunction = [
             "Royal": generateRoyalName,
-            "Magician": generateMagicianName
+            "Fantasy": generateFantasyName,
+            "Mafia": generateMafiaName
         ]
         
         myPickerView = MyPickerView()
@@ -59,15 +60,16 @@ class ViewController: UIViewController, UITextFieldDelegate, MyPickerViewProtoco
         // Dispose of any resources that can be recreated.
     }
     
-    public func generateRoyalName() {
-        let rg = RoyalNameGenerator()
-        pseudonymLabel.text = rg.generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
+    public func generateRoyalName() -> String {
+        return RoyalNameGenerator().generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
     }
     
-    public func generateMagicianName() {
-        let mg = MagicianNameGenerator()
-        usersName = mg.generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
-        pseudonymLabel.text = usersName
+    public func generateFantasyName() -> String {
+        return FantasyNameGenerator().generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
+    }
+    
+    public func generateMafiaName() -> String {
+        return MafiaNameGenerator().generate(forName: usersName, withGender: genderSegmentedControl.selectedSegmentIndex)
     }
     
     func myPickerDidSelectRow(selectedRowValue: String) {
