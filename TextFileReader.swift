@@ -26,7 +26,6 @@ class TextFileReader {
             }
         }
 
-        // Capitalizes first letter of each word
-        return randomWord.capitalized
+        return randomWord
     }
 }
