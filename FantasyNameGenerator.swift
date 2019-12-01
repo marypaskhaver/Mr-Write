@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MagicianNameGenerator: NameGenerator {
+class FantasyNameGenerator: NameGenerator {
     var textFileReader: TextFileReader = TextFileReader()
     
     private let transitionTable: [String : [String]] = [
