@@ -36,10 +36,6 @@ class MafiaNameGenerator: NameGenerator {
         return textFileReader.returnRandomWordFromFile(withName: "adjectives")
     }
     
-    private func color() -> String {
-        textFileReader.returnRandomWordFromFile(withName: "colors")
-    }
-    
     private func mafiaSuffix(forGender gender: Int) -> String {
         if gender == 0 {
             return textFileReader.returnRandomWordFromFile(withName: "maleMafiaSuffixes")
