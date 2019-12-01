@@ -15,7 +15,6 @@ hands
 dragon
 brains
 schemer
-tuna
 chief
 plumber
 cigar
@@ -37,7 +36,6 @@ lamb
 chicken
 bear
 weasel
-dapper
 rock
 genius
 bones
